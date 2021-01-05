@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Contoso University</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="students.html">Students</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="courses.html">Courses</a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <!-- Main Content -->
+
+
+    <div class="container">
+
+        <p>This is the courses page</p>
+
+        <table id="td2" class="table">
+            <!--<tr>
+            <td>Name</td>
+            <td>Course</td>
+        </tr>-->
+
+        </table>
+
+
+        <form>
+
+            <table>
+                <tr>
+                    <th>Course Id: </th>
+                    <td><input type="text" id="textid" disabled /><br /></td>
+                </tr>
+                <tr>
+                    <th>Course Name: </th>
+                    <td><input type="text" id="textname" required /><br /></td>
+                </tr>
+            </table><br />
+
+            <input type="button" value="Add Course" onclick="SendData()" />
+            <input type="button" value="Update Course Data" onclick="UpdateData()" />
+
+        </form>
+
+        <br /><br />
+
+        <p id="message"></p>
+
+
+    </div>
+
+
+
+    <div class="jumbotron text-center" style="margin-bottom:0">
+        <p>Copyright @ Contonso University 2020</p>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+    <script>
+
+
+        $(document).ready(function () { //same as <body onload="GetData()"> as soon as body/broweser is loaded, get data , this waits for everything to load, onbody -> does not wait for everything to load
+            GetData();
+        });
+
+        function SendData() {
+            var course = {};
+            course.name = $("#textname").val();
+
+            $.post("http://localhost:3000/courses", course)
+                .done(res => Success(res))
+                .fail(res => Error(res));
+        }
+
+        function GetData() {
+            $.get("http://localhost:3000/courses")
+                .done(res => SuccessGet(res))
+                .fail(res => Error(res));
+        }
+
+        function Success(res) {
+            // clear text boxes
+            $("#textid").val("");
+            $("#textname").val("");
+
+            alert("Action is successful...");
+
+            // get all records
+            GetData();
+        }
+
+        function Error(res) {
+            alert("Error... please read the console log for more info...");
+            console.log(res);
+        }
+
+        function SuccessGet(res) {
+
+            $('#td2 tr').remove(); // remove all the rows
+            //$('#td2 th tr').remove(); // remove all the headers and rowss
+
+
+            $('#td2').append('<tr><th> Course Id </th><th> Course Name </th><th></th><th></th></tr>')
+
+
+            for (temp of res) {
+                //alert(temp.name);
+
+                $('#td2').append('<tr id="' + temp.id + '"><td>' + temp.id + '</td><td>'
+                    + temp.name + '</td ><td>'
+                    + '<a href="#" onclick="EditData(' + temp.id + ')"> Edit </a ></td > <td>'
+                    + '<a href="#" onclick="DeleteData(' + temp.id + ')"> Delete </a></td></tr>');
+
+            }
+
+            var course_count = res.length; //count number of courses
+
+            document.getElementById("message").innerHTML = "Total number of courses: " + course_count;
+
+
+            localStorage.setItem("course_count", course_count);
+
+        }
+
+
+        function EditData(id) {
+
+            //extracting the value from the TR
+            var tdId = $("#td2").find('tr:eq(' + id + ')').find('td:eq(0)').html();
+            var tdName = $("#td2").find('tr:eq(' + id + ')').find('td:eq(1)').html();
+
+            $("#textid").val(tdId);
+            $("#textname").val(tdName);
+
+
+            alert("Editing...");
+
+        }
+
+        function UpdateData() {
+
+            var course = {};
+            course.id = $("#textid").val();
+            course.name = $("#textname").val();
+
+            $.ajax({
+                url: "http://localhost:3000/courses/" + course.id,
+                type: 'PUT',
+                data: course,
+                success: Success, //function, no need ()
+                error: Error //function, no need ()
+
+            })
+
+            alert("Update successful...")
+        }
+
+
+        function DeleteData(id) {
+
+            $.ajax({
+                url: 'http://localhost:3000/courses/' + id,
+                type: 'DELETE',
+                success: Success, //function, no need ()
+                error: Error //function, no need ()
+            });
+
+
+            alert("Delete successful...");
+
+        }
+
+    </script>
+
+
+
+</body>
+</html>

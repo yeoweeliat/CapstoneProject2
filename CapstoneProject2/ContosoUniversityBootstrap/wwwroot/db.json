@@ -1,0 +1,52 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "ywl123",
+      "course": "3"
+    },
+    {
+      "id": 2,
+      "name": "apple",
+      "course": "2"
+    },
+    {
+      "id": 3,
+      "name": "orange",
+      "course": "3"
+    },
+    {
+      "name": "123",
+      "course": "12",
+      "id": 4
+    },
+    {
+      "name": "er",
+      "course": "6",
+      "id": 6
+    },
+    {
+      "name": "123",
+      "course": "12",
+      "id": 7
+    }
+  ],
+  "courses": [
+    {
+      "id": 1,
+      "name": "Course 1"
+    },
+    {
+      "id": 2,
+      "name": "Course 2"
+    },
+    {
+      "id": 3,
+      "name": "Course 3"
+    },
+    {
+      "id": 4,
+      "name": "Course 4"
+    }
+  ]
+}
