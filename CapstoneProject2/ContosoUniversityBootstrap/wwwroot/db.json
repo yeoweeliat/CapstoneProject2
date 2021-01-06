@@ -3,50 +3,62 @@
     {
       "id": 1,
       "name": "ywl123",
-      "course": "3"
+      "course": "3",
+      "enrollment_date": "5/1/2021"
     },
     {
       "id": 2,
       "name": "apple",
-      "course": "2"
+      "course": "2",
+      "enrollment_date": "5/1/2021"
     },
     {
       "id": 3,
       "name": "orange",
-      "course": "3"
+      "course": "3",
+      "enrollment_date": "5/1/2021"
     },
     {
-      "name": "123",
-      "course": "12",
-      "id": 4
+      "id": 4,
+      "name": "pineapple",
+      "course": "1",
+      "enrollment_date": "5/1/2021"
     },
     {
-      "name": "er",
-      "course": "6",
-      "id": 6
-    },
-    {
-      "name": "123",
-      "course": "12",
-      "id": 7
+      "id": 5,
+      "name": "peach",
+      "course": "877",
+      "enrollment_date": "6/1/2021"
     }
   ],
   "courses": [
     {
       "id": 1,
-      "name": "Course 1"
+      "name": "Mathematics"
     },
     {
       "id": 2,
-      "name": "Course 2"
+      "name": "Science"
     },
     {
       "id": 3,
-      "name": "Course 3"
+      "name": "English"
     },
     {
       "id": 4,
-      "name": "Course 4"
+      "name": "Chinese"
+    },
+    {
+      "name": "Art",
+      "id": 5
+    },
+    {
+      "name": "Engineering",
+      "id": 6
+    },
+    {
+      "id": 7,
+      "name": "Music"
     }
   ]
 }

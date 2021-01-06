@@ -29,17 +29,14 @@
     <!-- Main Content -->
 
 
-    <div class="container">
+    <div class="container-fluid">
 
         <p>This is the students page</p>
 
         <table id="td1" class="table">
-            <!--<tr>
-                <td>Name</td>
-                <td>Course</td>
-            </tr>-->
 
         </table>
+
 
         <form>
 
@@ -56,10 +53,14 @@
                     <th>Course: </th>
                     <td><input type="text" id="textcourse" required /><br /></td>
                 </tr>
+                <tr>
+                    <th>Enrollment Date: </th>
+                    <td><input type="text" id="textdate" required /><br /></td>
+                </tr>
             </table><br />
 
-            <input type="button" value="Add Student" onclick="SendData()" />
-            <input type="button" value="Update Student Data" onclick="UpdateData()" />
+            <input type="button" id="addStudentButton" value="Add Student" onclick="SendData()" />
+            <input type="button" id="updateStudentButton"value="Update Student Data" onclick="UpdateData()" />
 
         </form>
 
@@ -104,8 +105,48 @@
             $.get("http://localhost:3000/students")
                 .done(res => SuccessGet(res))
                 .fail(res => Error(res));
+
+            $("#addStudentButton").show();
+            $("#updateStudentButton").hide();
         }
 
+
+        function SendData() {
+
+            var student = {};
+            student.name = $("#textname").val();
+            student.course = $("#textcourse").val();
+            student.enrollment_date = $("#textdate").val();
+
+            $.post("http://localhost:3000/students", student)
+                .done(res => Success(res))
+                .fail(res => Error(res));
+
+            $("#addStudentButton").show();
+            $("#updateStudentButton").hide();
+        }
+
+
+        function Success(res) {
+            // clear text boxes
+            $("#textid").val("");
+            $("#textname").val("");
+            $("#textcourse").val("");
+            $("#textdate").val("");
+
+            alert("Action is successful...");
+
+            // get all records
+            GetData();
+        }
+
+
+        function Error(res) {
+            alert("Error... please read the console log for more info...");
+            console.log(res);
+        }
+
+        
         function SuccessGet(res) {
 
 
@@ -113,15 +154,16 @@
             //$('#td1 th tr').remove(); // remove all the headers and rowss
 
 
-            $('#td1').append('<tr><th> Student Id </th><th> Name </th><th> Course </th><th></th><th></th></tr>')
+            $('#td1').append('<tr><th> Student Id </th><th> Name </th><th> Course </th><th> Enrollment Date </th><th></th><th></th></tr>')
 
-            
+
             for (temp of res) {
                 //alert(temp.name);
 
                 $('#td1').append('<tr id="' + temp.id + '"><td>' + temp.id + '</td><td>'
                     + temp.name + '</td ><td>'
                     + temp.course + '</td><td>'
+                    + temp.enrollment_date + '</td><td>'
                     + '<a href="#" onclick="EditData(' + temp.id + ')"> Edit </a ></td > <td>'
                     + '<a href="#" onclick="DeleteData(' + temp.id + ')"> Delete </a></td></tr>');
 
@@ -133,60 +175,39 @@
 
 
             localStorage.setItem("student_count", student_count);
-            
+
         }
 
-        function Success(res) {
-            // clear text boxes
-            $("#textid").val("");
-            $("#textname").val("");
-            $("#textcourse").val("");
-
-            alert("Action is successful...");
-
-            // get all records
-            GetData();
-        }
-
-        function Error(res) {
-            alert("Error... please read the console log for more info...");
-            console.log(res);
-        }
-
-        
-
-        function SendData() {
-            var student = {};
-            student.name = $("#textname").val();
-            student.course = $("#textcourse").val();
-
-            $.post("http://localhost:3000/students", student)
-                .done(res => Success(res))
-                .fail(res => Error(res));
-        }
 
         function EditData(id) {
 
             //extracting the value from the TR
-            var tdId = $("#td1").find('tr:eq(' + id + ')').find('td:eq(0)').html();
-            var tdName = $("#td1").find('tr:eq(' + id + ')').find('td:eq(1)').html();
-            var tdCourse = $("#td1").find('tr:eq(' + id + ')').find('td:eq(2)').html();
+            var tdId = $("#td1").find('tr:eq(' + id + ')').find('td:eq(0)').html().trim();
+            var tdName = $("#td1").find('tr:eq(' + id + ')').find('td:eq(1)').html().trim();
+            var tdCourse = $("#td1").find('tr:eq(' + id + ')').find('td:eq(2)').html().trim();
+            var tdEnrollDate = $("#td1").find('tr:eq(' + id + ')').find('td:eq(3)').html().trim();
 
             $("#textid").val(tdId);
             $("#textname").val(tdName);
             $("#textcourse").val(tdCourse);
-
+            $("#textdate").val(tdEnrollDate);
 
             alert("Edit successful...");
 
+
+            $("#addStudentButton").hide();
+            $("#updateStudentButton").show();
+
         }
+
 
         function UpdateData() {
 
             var student = {};
-            student.id = $("#textid").val();
-            student.name = $("#textname").val();
-            student.course = $("#textcourse").val();
+            student.id = $("#textid").val().trim();
+            student.name = $("#textname").val().trim();
+            student.course = $("#textcourse").val().trim();
+            student.enrollment_date = $("#textdate").val().trim();
 
             $.ajax({
                 url: "http://localhost:3000/students/" + student.id,
@@ -197,7 +218,11 @@
 
             })
 
-            alert("Update successful...")
+            alert("Update successful...");
+
+
+            $("#addStudentButton").show();
+            $("#updateStudentButton").hide();
         }
 
 
@@ -211,6 +236,10 @@
             });
 
             alert("Delete successful...");
+
+
+            $("#addStudentButton").show();
+            $("#updateStudentButton").hide();
 
         }
 

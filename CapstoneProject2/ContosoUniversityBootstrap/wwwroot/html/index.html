@@ -18,6 +18,8 @@
 </head>
 <body>
 
+    <!-- Navigation Bar -->
+
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <ul class="navbar-nav">
             <li class="nav-item active">
@@ -33,6 +35,8 @@
     </nav>
 
 
+
+    <!-- Main Content -->
 
     <div id="demo" class="carousel slide" data-ride="carousel">
         <ul class="carousel-indicators">
@@ -102,15 +106,10 @@
             </div>
         </div>
 
-    <script>
-        
-
-        document.getElementById("countStudents").innerHTML = "Total number of students: " + localStorage.getItem("student_count");
-        document.getElementById("countCourses").innerHTML = "Total number of courses: " + localStorage.getItem("course_count");
+    </div>
 
 
-
-    </script>
+    <!--Footer-->
 
     <div class="jumbotron text-center" style="margin-bottom:0">
         <p>Copyright @ Contonso University 2020</p>
@@ -121,6 +120,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <script>
+
+        document.getElementById("countStudents").innerHTML = "Total number of students: " + localStorage.getItem("student_count");
+        document.getElementById("countCourses").innerHTML = "Total number of courses: " + localStorage.getItem("course_count");
+
+    </script>
 
 </body>
 </html>

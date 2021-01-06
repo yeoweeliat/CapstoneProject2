@@ -8,6 +8,8 @@
 </head>
 <body>
 
+    <!-- Navigation Bar -->
+
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -26,15 +28,12 @@
     <!-- Main Content -->
 
 
-    <div class="container">
+    <div class="container-fluid">
 
         <p>This is the courses page</p>
 
         <table id="td2" class="table">
-            <!--<tr>
-            <td>Name</td>
-            <td>Course</td>
-        </tr>-->
+
 
         </table>
 
@@ -52,8 +51,8 @@
                 </tr>
             </table><br />
 
-            <input type="button" value="Add Course" onclick="SendData()" />
-            <input type="button" value="Update Course Data" onclick="UpdateData()" />
+            <input type="button" id="addCourseButton" value="Add Course" onclick="SendData()" />
+            <input type="button" id="updateCourseButton" value="Update Course Data" onclick="UpdateData()" />
 
         </form>
 
@@ -65,11 +64,15 @@
     </div>
 
 
+    <!--Footer-->
 
     <div class="jumbotron text-center" style="margin-bottom:0">
         <p>Copyright @ Contonso University 2020</p>
     </div>
 
+
+
+    <!-- Javascript-->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -84,20 +87,31 @@
             GetData();
         });
 
-        function SendData() {
-            var course = {};
-            course.name = $("#textname").val();
-
-            $.post("http://localhost:3000/courses", course)
-                .done(res => Success(res))
-                .fail(res => Error(res));
-        }
-
+        
         function GetData() {
             $.get("http://localhost:3000/courses")
                 .done(res => SuccessGet(res))
                 .fail(res => Error(res));
+
+            //success or error, execute this
+            $("#addCourseButton").show();
+            $("#updateCourseButton").hide();
         }
+
+
+        function SendData() {
+            var course = {};
+            course.name = $("#textname").val().trim();
+
+            $.post("http://localhost:3000/courses", course)
+                .done(res => Success(res))
+                .fail(res => Error(res));
+
+            //success or error, execute this
+            $("#addCourseButton").show();
+            $("#updateCourseButton").hide();
+        }
+
 
         function Success(res) {
             // clear text boxes
@@ -108,12 +122,16 @@
 
             // get all records
             GetData();
+            
         }
+
 
         function Error(res) {
             alert("Error... please read the console log for more info...");
             console.log(res);
+
         }
+
 
         function SuccessGet(res) {
 
@@ -156,13 +174,17 @@
 
             alert("Editing...");
 
+            $("#addCourseButton").hide();
+            $("#updateCourseButton").show();
+
         }
+
 
         function UpdateData() {
 
             var course = {};
-            course.id = $("#textid").val();
-            course.name = $("#textname").val();
+            course.id = $("#textid").val().trim();
+            course.name = $("#textname").val().trim();
 
             $.ajax({
                 url: "http://localhost:3000/courses/" + course.id,
@@ -173,7 +195,12 @@
 
             })
 
-            alert("Update successful...")
+            alert("Update successful...");
+
+
+            $("#addCourseButton").show();
+            $("#updateCourseButton").hide();
+
         }
 
 
@@ -188,6 +215,10 @@
 
 
             alert("Delete successful...");
+
+
+            $("#addCourseButton").show();
+            $("#updateCourseButton").hide();
 
         }
 
