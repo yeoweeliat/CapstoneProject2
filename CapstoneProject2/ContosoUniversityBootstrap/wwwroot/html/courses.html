@@ -25,16 +25,15 @@
     </nav>
 
 
-    <!-- Main Content -->
 
+    <!-- Main Content -->
 
     <div class="container-fluid">
 
-        <p>This is the courses page</p>
+        <p>This is the courses page</p><br />
+
 
         <table id="td2" class="table">
-
-
         </table>
 
 
@@ -64,9 +63,10 @@
     </div>
 
 
+
     <!--Footer-->
 
-    <div class="jumbotron text-center" style="margin-bottom:0">
+    <div class="jumbotron jumbotron-fluid text-center" style="margin-bottom:0px;">
         <p>Copyright @ Contonso University 2020</p>
     </div>
 
@@ -84,7 +84,9 @@
 
 
         $(document).ready(function () { //same as <body onload="GetData()"> as soon as body/broweser is loaded, get data , this waits for everything to load, onbody -> does not wait for everything to load
+
             GetData();
+
         });
 
         
@@ -100,20 +102,28 @@
 
 
         function SendData() {
-            var course = {};
-            course.name = $("#textname").val().trim();
 
-            $.post("http://localhost:3000/courses", course)
-                .done(res => Success(res))
-                .fail(res => Error(res));
+            var check = CheckValidation(); //check for empty fields
 
-            //success or error, execute this
-            $("#addCourseButton").show();
-            $("#updateCourseButton").hide();
+            if (check == true) { //if no empty field, execute
+
+                var course = {};
+                course.name = $("#textname").val().trim();
+
+                $.post("http://localhost:3000/courses", course)
+                    .done(res => Success(res))
+                    .fail(res => Error(res));
+
+                //success or error, execute this
+                $("#addCourseButton").show();
+                $("#updateCourseButton").hide();
+
+            }
         }
 
 
         function Success(res) {
+
             // clear text boxes
             $("#textid").val("");
             $("#textname").val("");
@@ -136,14 +146,11 @@
         function SuccessGet(res) {
 
             $('#td2 tr').remove(); // remove all the rows
-            //$('#td2 th tr').remove(); // remove all the headers and rowss
-
 
             $('#td2').append('<tr><th> Course Id </th><th> Course Name </th><th></th><th></th></tr>')
 
 
             for (temp of res) {
-                //alert(temp.name);
 
                 $('#td2').append('<tr id="' + temp.id + '"><td>' + temp.id + '</td><td>'
                     + temp.name + '</td ><td>'
@@ -182,24 +189,29 @@
 
         function UpdateData() {
 
-            var course = {};
-            course.id = $("#textid").val().trim();
-            course.name = $("#textname").val().trim();
+            var check = CheckValidation(); //check for empty fields
 
-            $.ajax({
-                url: "http://localhost:3000/courses/" + course.id,
-                type: 'PUT',
-                data: course,
-                success: Success, //function, no need ()
-                error: Error //function, no need ()
+            if (check == true) { //if no empty field, execute
 
-            })
+                var course = {};
+                course.id = $("#textid").val().trim();
+                course.name = $("#textname").val().trim();
 
-            alert("Update successful...");
+                $.ajax({
+                    url: "http://localhost:3000/courses/" + course.id,
+                    type: 'PUT',
+                    data: course,
+                    success: Success, //function, no need ()
+                    error: Error //function, no need ()
+
+                })
+
+                alert("Update successful...");
 
 
-            $("#addCourseButton").show();
-            $("#updateCourseButton").hide();
+                $("#addCourseButton").show();
+                $("#updateCourseButton").hide();
+            }
 
         }
 
@@ -222,8 +234,20 @@
 
         }
 
-    </script>
 
+        function CheckValidation() {
+
+            //check if input is empty
+            if (document.getElementById("textname").value.length == 0) {
+                alert("Course Name is a required field..."); // display message to user
+                return false; //if length 0, return false
+            }
+
+            return true;
+        }
+
+
+    </script>
 
 
 </body>

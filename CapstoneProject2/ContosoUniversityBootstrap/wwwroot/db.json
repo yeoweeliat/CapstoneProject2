@@ -4,31 +4,43 @@
       "id": 1,
       "name": "ywl123",
       "course": "3",
-      "enrollment_date": "5/1/2021"
+      "enrollment_date": "01/05/2021"
     },
     {
       "id": 2,
       "name": "apple",
       "course": "2",
-      "enrollment_date": "5/1/2021"
+      "enrollment_date": "01/05/2021"
     },
     {
       "id": 3,
       "name": "orange",
       "course": "3",
-      "enrollment_date": "5/1/2021"
+      "enrollment_date": "01/05/2021"
     },
     {
       "id": 4,
       "name": "pineapple",
       "course": "1",
-      "enrollment_date": "5/1/2021"
+      "enrollment_date": "01/05/2021"
     },
     {
       "id": 5,
       "name": "peach",
-      "course": "877",
-      "enrollment_date": "6/1/2021"
+      "course": "1",
+      "enrollment_date": "01/07/2021"
+    },
+    {
+      "id": 6,
+      "name": "mango",
+      "course": "2",
+      "enrollment_date": "01/15/2021"
+    },
+    {
+      "id": 7,
+      "name": "jackfruit",
+      "course": "7",
+      "enrollment_date": "01/08/2021"
     }
   ],
   "courses": [

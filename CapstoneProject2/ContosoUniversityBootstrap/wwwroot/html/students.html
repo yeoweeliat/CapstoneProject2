@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
 </head>
 <body>
 
@@ -26,15 +25,15 @@
     </nav>
 
 
-    <!-- Main Content -->
 
+    <!-- Main Content -->
 
     <div class="container-fluid">
 
-        <p>This is the students page</p>
+        <p>This is the students page</p><br />
+
 
         <table id="td1" class="table">
-
         </table>
 
 
@@ -51,16 +50,16 @@
                 </tr>
                 <tr>
                     <th>Course: </th>
-                    <td><input type="text" id="textcourse" required /><br /></td>
+                    <td><select id="textcourse" onclick="LoadCourses()" required"></select><br /></td>
                 </tr>
                 <tr>
                     <th>Enrollment Date: </th>
-                    <td><input type="text" id="textdate" required /><br /></td>
+                    <td><input type="text" id="textdate" onfocus="CallDatepicker()" required /><br /></td>
                 </tr>
             </table><br />
 
             <input type="button" id="addStudentButton" value="Add Student" onclick="SendData()" />
-            <input type="button" id="updateStudentButton"value="Update Student Data" onclick="UpdateData()" />
+            <input type="button" id="updateStudentButton" value="Update Student Data" onclick="UpdateData()" />
 
         </form>
 
@@ -76,8 +75,7 @@
 
     <!--Footer-->
 
-
-    <div class="jumbotron text-center" style="margin-bottom:0">
+    <div class="jumbotron jumbotron-fluid text-center" style="margin-bottom:0px;">
         <p>Copyright @ Contonso University 2020</p>
     </div>
 
@@ -97,21 +95,27 @@
         $(document).ready(function () { //same as <body onload="GetData()"> as soon as body/broweser is loaded, get data , this waits for everything to load, onbody -> does not wait for everything to load
 
             GetData();
-            
+
         });
 
 
         function GetData() {
+
             $.get("http://localhost:3000/students")
                 .done(res => SuccessGet(res))
                 .fail(res => Error(res));
 
             $("#addStudentButton").show();
             $("#updateStudentButton").hide();
+
         }
 
 
         function SendData() {
+
+            var check = CheckValidation(); //check for empty fields
+
+            if (check == true) { //if no empty field, execute
 
             var student = {};
             student.name = $("#textname").val();
@@ -124,10 +128,13 @@
 
             $("#addStudentButton").show();
             $("#updateStudentButton").hide();
+
+            }
         }
 
 
         function Success(res) {
+
             // clear text boxes
             $("#textid").val("");
             $("#textname").val("");
@@ -138,27 +145,26 @@
 
             // get all records
             GetData();
+
         }
 
 
         function Error(res) {
+
             alert("Error... please read the console log for more info...");
             console.log(res);
+
         }
 
-        
+
         function SuccessGet(res) {
 
-
             $('#td1 tr').remove(); // remove all the rows
-            //$('#td1 th tr').remove(); // remove all the headers and rowss
 
-
-            $('#td1').append('<tr><th> Student Id </th><th> Name </th><th> Course </th><th> Enrollment Date </th><th></th><th></th></tr>')
+            $('#td1').append('<tr><th> Student Id </th><th> Name </th><th> Course </th><th> Enrollment Date </th><th></th><th></th></tr>');
 
 
             for (temp of res) {
-                //alert(temp.name);
 
                 $('#td1').append('<tr id="' + temp.id + '"><td>' + temp.id + '</td><td>'
                     + temp.name + '</td ><td>'
@@ -203,26 +209,32 @@
 
         function UpdateData() {
 
-            var student = {};
-            student.id = $("#textid").val().trim();
-            student.name = $("#textname").val().trim();
-            student.course = $("#textcourse").val().trim();
-            student.enrollment_date = $("#textdate").val().trim();
+            var check = CheckValidation(); //check for empty fields
 
-            $.ajax({
-                url: "http://localhost:3000/students/" + student.id,
-                type: 'PUT',
-                data: student,
-                success: Success, //function, no need ()
-                error: Error //function, no need ()
+            if (check == true) { //if no empty field, execute
 
-            })
+                var student = {};
+                student.id = $("#textid").val().trim();
+                student.name = $("#textname").val().trim();
+                student.course = $("#textcourse").val().trim();
+                student.enrollment_date = $("#textdate").val().trim();
 
-            alert("Update successful...");
+                $.ajax({
+                    url: "http://localhost:3000/students/" + student.id,
+                    type: 'PUT',
+                    data: student,
+                    success: Success, //function, no need ()
+                    error: Error //function, no need ()
+
+                })
+
+                alert("Update successful...");
 
 
-            $("#addStudentButton").show();
-            $("#updateStudentButton").hide();
+                $("#addStudentButton").show();
+                $("#updateStudentButton").hide();
+            }
+
         }
 
 
@@ -241,6 +253,65 @@
             $("#addStudentButton").show();
             $("#updateStudentButton").hide();
 
+        }
+
+    
+        function LoadCourses() {
+
+            $.get("http://localhost:3000/courses")
+
+                .done(function(response) {
+
+                    $('#textcourse option').remove();
+
+                    $.each(response, function (id, course) {
+                        $("#textcourse").append('<option value="' + course.id + '">' + course.id + ' -> ' + course.name + '</option>');
+                    });
+                })
+
+                .fail(response => Error(response));
+        }
+
+
+        function CheckValidation() {
+
+            //check if input is empty
+            if (document.getElementById("textname").value.length == 0) {
+                alert("Name is a required field..."); // display message to user
+                return false; //if length 0, return false
+            }
+
+            if (document.getElementById("textcourse").value.length == 0) {
+                alert("Course is a required field...");
+                return false;
+            }
+
+            if (document.getElementById("textdate").value.length == 0) {
+                alert("Enrollment Date is a required field...");
+                return false;
+            }
+
+            return true;
+        }
+
+    </script>
+
+
+    <!--Jquery UI for datepicker -->
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+
+        function CallDatepicker() {
+
+            $("#textdate").datepicker({
+                changeYear: true,
+                changeMonth: true,
+                showOtherMonths: true
+            }).focus();
         }
 
     </script>
