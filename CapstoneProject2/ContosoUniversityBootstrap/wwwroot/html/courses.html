@@ -172,8 +172,8 @@
         function EditData(id) {
 
             //extracting the value from the TR
-            var tdId = $("#td2").find('tr:eq(' + id + ')').find('td:eq(0)').html();
-            var tdName = $("#td2").find('tr:eq(' + id + ')').find('td:eq(1)').html();
+            var tdId = $("#td2").find('tr:eq(' + id + ')').find('td:eq(0)').html().trim();
+            var tdName = $("#td2").find('tr:eq(' + id + ')').find('td:eq(1)').html().trim();
 
             $("#textid").val(tdId);
             $("#textname").val(tdName);

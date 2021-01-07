@@ -118,9 +118,9 @@
             if (check == true) { //if no empty field, execute
 
             var student = {};
-            student.name = $("#textname").val();
-            student.course = $("#textcourse").val();
-            student.enrollment_date = $("#textdate").val();
+            student.name = $("#textname").val().trim();
+            student.course = $("#textcourse").val().trim();
+            student.enrollment_date = $("#textdate").val().trim();
 
             $.post("http://localhost:3000/students", student)
                 .done(res => Success(res))
